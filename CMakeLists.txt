@@ -3,4 +3,6 @@ project(dijkstra)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(dijkstra main.cpp)
+include_directories(src/header)
+
+add_executable(dijkstra src/cpp/main.cpp src/cpp/Graph.cpp)
