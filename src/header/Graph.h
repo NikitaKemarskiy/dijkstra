@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <climits>
 using namespace std;
 
 class Graph {
@@ -15,6 +16,8 @@ public:
     Graph(int);
     void inputMatrix();
     void outputMatrix();
+    void findShortestPaths(int);
+    int findClosestVertex(int, int, vector<bool>);
 };
 
 

@@ -13,5 +13,7 @@ int main() {
     graph.inputMatrix();
     graph.outputMatrix();
 
+    graph.findShortestPaths(1);
+
     return 0;
 }
