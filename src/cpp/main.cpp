@@ -16,7 +16,7 @@ int main() {
     graph.inputMatrix();
     graph.outputMatrix();
 
-    vector<int> pathsLength = graph.findShortestPaths(1);
+    vector<int> pathsLength = graph.findShortestPaths(vertex);
 
     for (int i = 0; i < pathsLength.size(); i++) {
         cout << vertex << " - " << i + 1 << ": " << pathsLength[i] << endl;

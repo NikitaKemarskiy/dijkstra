@@ -58,7 +58,6 @@ vector<int> Graph::findShortestPaths(int vertex) {
     while (!done) {
         for (int i = 0; i < this->vertex; i++) {
             if (adjacencyMatrix[currentVertex][i] > 0 && i != currentVertex && !vertexDone[i]) {
-                //cout << "Vertex => from " << currentVertex + 1 << " to " << i + 1 << endl;
                 int length = pathsLength[currentVertex] + adjacencyMatrix[currentVertex][i]; // Find the length of the new path
                 if (length < pathsLength[i]) { // Found path is shorter than previous path
                     pathsLength[i] = length; // Update the length
