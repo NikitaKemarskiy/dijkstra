@@ -16,8 +16,9 @@ public:
     Graph(int);
     void inputMatrix();
     void outputMatrix();
-    void findShortestPaths(int);
-    int findClosestVertex(int, int, vector<bool>);
+    vector<int> findShortestPaths(int);
+    int findClosestVertex(int, vector<bool>);
+    bool checkIfVerticesDone(vector<bool>);
 };
 
 

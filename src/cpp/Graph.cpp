@@ -41,55 +41,58 @@ void Graph::outputMatrix() {
 }
 
 // Function for searching for the shortest paths from the specified vertex
-void Graph::findShortestPaths(int vertex) {
-    int currentVertex = vertex - 1;
+vector<int> Graph::findShortestPaths(int vertex) {
+    int currentVertex = vertex - 1; // Assign the specified matrix as a current matrix
     vector<int> pathsLength(this->vertex, INT_MAX); // Vector for paths length
-    vector<bool> vertexDone(this->vertex, false);
+    vector<bool> vertexDone(this->vertex, false); // Vector for flags if vertices were reviewed
     pathsLength[currentVertex] = 0; // Length to the specified vertex is 0
 
-    // Invalid vertex was inputted
+    // Error: invalid vertex was inputted
     if (vertex > this->vertex || vertex <= 0) {
         cout << "Error: invalid vertex was inputted" << endl;
-        return;
+        return vector<int>(this->vertex, -1);
     }
 
-    bool done;
-    if (this->vertex > 1) { // Graph has more than one vertex
-        done = false; // Set done bool as false
-    } else { // Graph has only one vertex
-        done = true; // Set done as true
-    }
-
-    int lastIndex = 0;
+    bool done = false;
 
     while (!done) {
-        int index = this->findClosestVertex(currentVertex, lastIndex, vertexDone);
-        if (index == 0) { // The closest vertex wasn't found
-            lastIndex = 0;
-            vertexDone[currentVertex] = true; // Set the specified vertex as done
-            currentVertex = this->findClosestVertex(currentVertex, lastIndex, vertexDone);
-            //cout << "New current vertex => " << currentVertex + 1 << endl;
-            //break;
-        } else {
-            cout << "Vertex => from " << currentVertex + 1 << " to " << index + 1 << endl;
-            int length = pathsLength[currentVertex] + adjacencyMatrix[currentVertex][index]; // Find the length of the new path
-            if (length < pathsLength[index]) { // Found path is shorter than previous path
-                pathsLength[index] = length; // Update the length
+        for (int i = 0; i < this->vertex; i++) {
+            if (adjacencyMatrix[currentVertex][i] > 0 && i != currentVertex && !vertexDone[i]) {
+                //cout << "Vertex => from " << currentVertex + 1 << " to " << i + 1 << endl;
+                int length = pathsLength[currentVertex] + adjacencyMatrix[currentVertex][i]; // Find the length of the new path
+                if (length < pathsLength[i]) { // Found path is shorter than previous path
+                    pathsLength[i] = length; // Update the length
+                }
             }
-            lastIndex = index + 1;
         }
+
+        vertexDone[currentVertex] = true; // Set the specified vertex as done
+        currentVertex = this->findClosestVertex(currentVertex, vertexDone);
+
+        done = checkIfVerticesDone(vertexDone);
     }
+
+    return pathsLength;
 }
 
 // Function that searches for the closest vertex to the specified vertex
-int Graph::findClosestVertex(int vertex, int lastIndex, vector<bool> vertexDone) {
+int Graph::findClosestVertex(int vertex, vector<bool> vertexDone) {
     int min = INT_MAX;
     int index = 0;
-    for (int i = lastIndex; i < this->vertex; i++) {
+    for (int i = 0; i < this->vertex; i++) {
         if (adjacencyMatrix[vertex][i] < min && adjacencyMatrix[vertex][i] > 0 && i != vertex && !vertexDone[i]) {
             min = adjacencyMatrix[vertex][i];
             index = i;
         }
     }
     return index;
+}
+
+bool Graph::checkIfVerticesDone(vector<bool> vertexDone) {
+    for (int i = 0; i < this->vertex; i++) {
+        if (vertexDone[i] == false) { // There's unreviewed vertex
+            return false; // Return false
+        }
+    }
+    return true; // All vertices were reviewed
 }
